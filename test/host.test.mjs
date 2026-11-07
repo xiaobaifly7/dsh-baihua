@@ -40,8 +40,10 @@ check('注册一段提示词，排在人设之后、工具说明之前', Boolean
 check('新会话默认开：顶层会话拿到大白话规则', rules.includes('大白话模式'))
 check('规则要点齐全：先给结论、术语保留原词加括号解释、代码命令原样、做法不变',
   rules.includes('第一句直接给结论') && rules.includes('保留原词') && rules.includes('原样保留') && rules.includes('只改说法，不改做法'))
-check('子代理、分叉会话不加规则（输出是给父代理看的）',
-  live.section.text({ agent: { id: 'c1', session: { id: 'c1', header: { parentSession: 's1' } } } }) === '')
+check('子代理（DSH 标 origin: subagent，含 fork 方式的子代理、旁问）不加规则：输出是给父代理看的',
+  live.section.text({ agent: { id: 'c1', session: { id: 'c1', header: { parentSession: 's1', isSeeded: true, origin: 'subagent' } } } }) === '')
+check('用户自己「分叉会话」分出来的会话（有 parentSession、没有 origin）是普通会话，照常拿到规则',
+  live.section.text({ agent: { id: 'f1', session: { id: 'f1', header: { parentSession: 's1', isSeeded: true } } } }).includes('大白话模式'))
 check('拿不到会话时不加规则', live.section.text({}) === '' && live.section.text(undefined) === '')
 check('只有 agent.id 没有 session 对象时按 id 判断', live.section.text({ agent: { id: 's9' } }).includes('大白话模式'))
 

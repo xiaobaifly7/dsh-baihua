@@ -40,9 +40,11 @@ function load(stateValues) {
     }
   })
   const slot = registered[0]
+  // 会话插槽默认给一个普通会话的 useSession（DSH 普通会话的 session.subagent 是 null）
+  const plainSession = (select) => select({ subagent: null })
   const render = (props) => {
     index = 0
-    const element = slot.component(props)
+    const element = slot.component(Object.assign({ useSession: plainSession }, props))
     return element.type(element.props)
   }
   return { slot, render }
@@ -64,7 +66,15 @@ check('开着：开关态、标签「大白话：开」',
 const offButton = load({ 0: false, 1: false }).render({ sessionId: 's1' })
 check('关着：标签「大白话：关」', offButton && offButton.props['aria-checked'] === false && offButton.props['aria-label'] === '大白话：关')
 const busyButton = load({ 0: true, 1: true }).render({ sessionId: 's1' })
-check('写入中按钮禁用，防止连点', busyButton && busyButton.props.disabled === true)
+check('写入中标 aria-busy 而不禁用按钮（禁用会把键盘焦点甩到页面顶上；连点由 busy 挡住）',
+  busyButton && busyButton.props['aria-busy'] === true && !busyButton.props.disabled)
+const subagentButton = load({ 0: true, 1: false }).render({
+  sessionId: 'c1',
+  useSession: (select) => select({ subagent: { address: { mode: 'continuable' } } })
+})
+check('子代理会话不显示按钮（宿主那边也不给子代理加规则）', subagentButton === null)
+const noHookButton = load({ 0: true, 1: false }).render({ sessionId: 's1', useSession: undefined })
+check('插槽没给 useSession 时当普通会话，按钮照常显示', noHookButton && noHookButton.type === 'button')
 
 const failed = results.filter((item) => !item.ok)
 console.log(`\n合计 ${results.length} 项，失败 ${failed.length} 项`)
