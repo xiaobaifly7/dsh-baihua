@@ -24,6 +24,6 @@ node test/client.test.mjs
 
 ## 卸载
 
-最好在插件市场里卸载（没有 agent 在跑时）：它会顺带清掉启用时写进 `profiles\desktop\cordis.patch.yml` 末尾的两行 `- id: baihua` / `disabled: false`。
+最好在插件市场里卸载（没有 agent 在跑时）：市场开关有时会在 `profiles\desktop\cordis.patch.yml` 末尾写一段 `- id: baihua`，卸载时它会顺带清掉。
 
-改用命令行时：`DSH_HOME` 指向 ASA 的 `data\home`，在 `profiles\desktop` 目录里运行 `dsh plugin --profile desktop remove dsh-baihua`，再手动删掉上面那两行（留着会变成指向不存在插件的补丁行），重启 DSH。最后删掉 `<DSH_HOME>\baihua\`。
+改用命令行时：`DSH_HOME` 指向 ASA 的 `data\home`，在 `profiles\desktop` 目录里运行 `dsh plugin --profile desktop remove dsh-baihua`；`cordis.patch.yml` 里如果有 `- id: baihua` 那一段，也手动删掉（留着会变成指向不存在插件的补丁行），重启 DSH。最后删掉 `<DSH_HOME>\baihua\`。
