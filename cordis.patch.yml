@@ -1,0 +1,5 @@
+# dsh-baihua bundle patch: one host row. The browser half is declared by
+# package.json `dsh.client` and served by the Harness.
+- insert:
+    - id: baihua
+      name: dsh-baihua

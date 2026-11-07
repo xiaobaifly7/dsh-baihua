@@ -1,0 +1,25 @@
+{
+  "name": "dsh-baihua",
+  "version": "0.1.0",
+  "private": true,
+  "description": "大白话模式：开关开着的会话里，让模型直接用大白话回答（术语保留原词并加白话解释，代码与命令原样）。",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "node test/host.test.mjs && node test/client.test.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}
