@@ -42,6 +42,7 @@ check('规则要点齐全：先给结论、术语保留原词加括号解释、�
   rules.includes('第一句直接给结论') && rules.includes('保留原词') && rules.includes('原样保留') && rules.includes('只改说法，不改做法'))
 check('规则压得住常见的冲突说法：专业话题照样用大白话、不顺着之前的腔调、「技术精度」不等于术语腔',
   rules.includes('专业话题全都包括在内') && rules.includes('别顺着之前的腔调继续') && rules.includes('不是要你改用术语腔'))
+check('规则管住格式：不用表格，内部实现细节用户要了才展开', rules.includes('不用表格') && rules.includes('只在用户明确要细节时才展开'))
 check('子代理（DSH 标 origin: subagent，含 fork 方式的子代理、旁问）不加规则：输出是给父代理看的',
   live.section.text({ agent: { id: 'c1', session: { id: 'c1', header: { parentSession: 's1', isSeeded: true, origin: 'subagent' } } } }) === '')
 check('用户自己「分叉会话」分出来的会话（有 parentSession、没有 origin）是普通会话，照常拿到规则',
